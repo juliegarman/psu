@@ -1,0 +1,17 @@
+$fields[] = new PMProRH_Field(
+		'interests', // input name, will also be used as meta key
+		'checkbox_grouped', // type of field
+		array(
+			'label' 	=> 'Interests',
+			'profile' 	=> true, // display on user profile and at checkout
+			'levels' 	=> array(1,2,3), // levels this field is shown on profile
+			'required' 	=> true, // optional field
+			'memberslistcsv' => true, // add to member export to csv file
+			'addmember' => true, // add to the add member manually form
+			'options' 	=> array( // <option> elements for select field
+				'board'		=> 'Board Participation',
+				'volunteer'	=> 'Volunteering',
+				'sponsor'	=> 'Sponsor',
+	)
+		)
+			);
