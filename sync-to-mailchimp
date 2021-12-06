@@ -1,0 +1,88 @@
+/**
+ * Sync additional user fields to Mailchimp.
+ * You must create the fields in Mailchimp first.
+ * Or, you can use the `pmpro_mailchimp_merge_fields` filter to create them through the API.
+ *
+ * You can add this recipe to your site by creating a custom plugin
+ * or using the Code Snippets plugin available for free in the WordPress repository.
+ * Read this companion article for step-by-step directions on either method.
+ * https://www.paidmembershipspro.com/create-a-plugin-for-pmpro-customizations/
+ *
+ */
+function my_pmpro_mailchimp_listsubscribe_fields( $fields, $user ) {
+	$new_fields =  array(
+		"First Name" => $user->bfirstname, 
+		"Last Name" => $user->blastname, 
+		"Address" => $user->baddress, 
+		"City" => $user->bcity,
+		"State" => $user->bstate,
+		"Zip" => $user->bzipcode,
+		"Phone" => $user->bphone,
+		"Degree/Major" => $user->degree_major,
+		"Grad Year" => $user->gradyear,
+		"Interests" => $user->interests,
+		"Partner Name" => $user->spouse_name,
+		"Partner Email" => $user->spouse_email		
+);
+
+	$fields = array_merge( $fields, $new_fields );
+	  
+	return $fields;
+}
+add_action( 'pmpro_mailchimp_listsubscribe_fields', 'my_pmpro_mailchimp_listsubscribe_fields', 10, 2 );
+
+/**
+ * Tell PMPro MailChimp to always synchronize user profile updates. By default it only synchronizes if the user's email has changed (optional).
+ * Requires PMPro Mailchimp v2.0.3 or higher.
+ */
+add_filter( 'pmpromc_profile_update', '__return_true' );
+
+
+
+
+
+/*
+ * Creates a new merge field in Mailchimp if one doesn't already exist.
+ */
+function my_pmpro_mailchimp_merge_fields( $merge_fields ) {
+	// Adds a "COMPANY" merge field to Mailchimp.
+	$merge_fields[] = array('bfirstname' => 'First Name', 'type' => 'text');
+	return $merge_fields;
+
+	$merge_fields[] = array('blastname' => 'Last Name', 'type' => 'text');
+	return $merge_fields;
+
+	$merge_fields[] = array('baddress1' => 'Address', 'type' => 'text');
+	return $merge_fields;
+
+	$merge_fields[] = array('bcity' => 'City', 'type' => 'text');
+	return $merge_fields;
+	
+	$merge_fields[] = array('bstate' => 'State', 'type' => 'text');
+	return $merge_fields;
+	
+	$merge_fields[] = array('bzipcode' => 'Zip', 'type' => 'text');
+	return $merge_fields;
+	
+	$merge_fields[] = array('bphone' => 'Phone', 'type' => 'text');
+	return $merge_fields;
+	
+	$merge_fields[] = array('degree_major' => 'Degree/Major', 'type' => 'text');
+	return $merge_fields;
+	
+	$merge_fields[] = array('gradyear' => 'Grad Year', 'type' => 'text');
+	return $merge_fields;
+	
+	$merge_fields[] = array('interests' => 'Interests', 'type' => 'checkbox');
+	return $merge_fields;
+	
+	$merge_fields[] = array('spouse_name' => 'Partner Name', 'type' => 'text');
+	return $merge_fields;
+	
+	$merge_fields[] = array('spouse_email' => 'Partner Email', 'type' => 'text');
+	return $merge_fields;
+}
+
+
+
+add_filter( 'pmpro_mailchimp_merge_fields', 'my_pmpro_mailchimp_merge_fields' );
